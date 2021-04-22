@@ -16,7 +16,7 @@
     tiles coming from the ceiling to replace them.
 
     As per previous projects, we'll be adopting a retro, NES-quality aesthetic.
-
+ 
     Credit for graphics (amazing work!):
     https://opengameart.org/users/buch
 
@@ -26,6 +26,7 @@
     Cool texture generator, used for background:
     http://cpetry.github.io/TextureGenerator-Online/
 ]]
+    
 
 -- initialize our nearest-neighbor filter
 love.graphics.setDefaultFilter('nearest', 'nearest')
