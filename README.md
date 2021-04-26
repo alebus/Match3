@@ -1,4 +1,5 @@
 Match3 - from the HarvardX CS50 Intro to Game Development: https://cs50.harvard.edu/games/2018/
+
 This source code contains changes I made to implement the following features per the assignment:
 
 - Implement time addition on matches, such that scoring a match extends the timer by 1 second per tile in a match.
