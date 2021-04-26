@@ -27,6 +27,9 @@
     http://cpetry.github.io/TextureGenerator-Online/
 ]]
     
+-- debug
+love._openConsole()    
+
 
 -- initialize our nearest-neighbor filter
 love.graphics.setDefaultFilter('nearest', 'nearest')

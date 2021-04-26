@@ -189,14 +189,28 @@ function PlayState:calculateMatches()
     -- if we have any matches, remove them and tween the falling blocks that result
     local matches = self.board:calculateMatches()
     
+
     if matches then
         gSounds['match']:stop()
         gSounds['match']:play()
 
+         -- debug
+         print("Matches: ", #matches )
+
         -- add score for each match
         for k, match in pairs(matches) do
             self.score = self.score + #match * 50
+
+            -- add 1 to the timer for each TILE, not just each match
+            self.timer = self.timer + #match
+            
+            --debug
+            print("adding ", #match, " to timer")
+
         end
+
+        
+
 
         -- remove any tiles that matched from the board, making empty spaces
         self.board:removeMatches()

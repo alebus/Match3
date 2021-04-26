@@ -2,7 +2,7 @@
     GD50
     Match-3 Remake
 
-    -- StartState Class --
+    -- Util Class --
 
     Author: Colton Ogden
     cogden@cs50.harvard.edu
