@@ -13,10 +13,16 @@
 
 Board = Class{}
 
-function Board:init(x, y)
+function Board:init(x, y, level)
     self.x = x
     self.y = y
     self.matches = {}
+
+    self.level = level 
+
+    print("level in board-init:", self.level)
+
+    
 
     self:initializeTiles()
 end
@@ -31,8 +37,19 @@ function Board:initializeTiles()
 
         for tileX = 1, 8 do
             
-            -- create a new tile at X,Y with a random color and variety
-            table.insert(self.tiles[tileY], Tile(tileX, tileY, math.random(18), math.random(6)))
+            
+            -- create a new tile at X,Y 
+            -- the max for color is math.random(18) and the max for pattern is math.random(6)
+            
+            if self.level == 1 then
+                table.insert(self.tiles[tileY], Tile(tileX, tileY, math.random(6), 1))
+            elseif self.level == 2 or self.level == 3 then
+                -- 12 or 18 colors
+                table.insert(self.tiles[tileY], Tile(tileX, tileY, math.random(self.level * 6), 1))
+                -- all colors and all patterns
+            elseif self.level >= 4 then
+                table.insert(self.tiles[tileY], Tile(tileX, tileY, math.random(18), math.random(6)))
+            end 
         end
     end
 
@@ -240,7 +257,17 @@ function Board:getFallingTiles()
             if not tile then
 
                 -- new tile with random color and variety
-                local tile = Tile(x, y, math.random(18), math.random(6))
+                
+                if self.level == 1 then
+                    tile = Tile(x, y, math.random(6), 1)
+                elseif self.level == 2 or self.level == 3 then
+                    -- 12 or 18 colors
+                    tile = Tile(x, y, math.random(self.level * 6), 1)
+                    -- all colors and all patterns
+                elseif self.level >= 4 then
+                    tile = Tile(x, y, math.random(18), math.random(6))
+                end 
+
                 tile.y = -32
                 self.tiles[y][x] = tile
 

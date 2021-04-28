@@ -56,18 +56,32 @@ function PlayState:init()
 end
 
 function PlayState:enter(params)
-    
+
+    print("entering playstate")
+
     -- grab level # from the params we're passed
     self.level = params.level
+    
+    print("self.level: ", self.level)
+
 
     -- spawn a board and place it toward the right
-    self.board = params.board or Board(VIRTUAL_WIDTH - 272, 16)
+    -- pass in the level which will have effect on board complexity
+    print("spawning board - in playstate")
+    
+
+    self.board = params.board or Board(VIRTUAL_WIDTH - 272, 16, self.level)
+
+    -- todo next - make the shaped blocks worth more (not sure where) and also recheck this increasing level of blocks is all working as expected
+
 
     -- grab score from params if it was passed
     self.score = params.score or 0
 
     -- score we have to reach to get to the next level
-    self.scoreGoal = self.level * 1.25 * 1000
+    -- todo change this back after testing - debug
+    --self.scoreGoal = self.level * 1.25 * 1000
+    self.scoreGoal = self.level * 1.25 * 500
 end
 
 function PlayState:update(dt)
@@ -99,6 +113,7 @@ function PlayState:update(dt)
         gSounds['next-level']:play()
 
         -- change to begin game state with new level (incremented)
+        print("going to next level")
         gStateMachine:change('begin-game', {
             level = self.level + 1,
             score = self.score
