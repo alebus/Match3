@@ -212,7 +212,6 @@ function PlayState:calculateMatches()
         -- add score for each match (note there is often only be one match but with multiple tiles)
         for k, match in pairs(matches) do
             
-            self.score = self.score + #match * 50
 
 
             --  match is a 2d array-  this is the code roughly:
@@ -226,10 +225,14 @@ function PlayState:calculateMatches()
                     -- print(m,n) -- this prints each tile's properties 
                 --    end
 
+                -- code moved into here so they get 50 per match + more below possibly. otherwise there is no reward for matching more than 3!
+                self.score = self.score + #match * 50
+
+
             -- here is the code where we add more points for each special shape tile
                 if k.variety > 1 then 
                     print("adding more because it's a shape tile")
-                    self.score = self.score + 200
+                    self.score = self.score + 100
                 end
 
             end
