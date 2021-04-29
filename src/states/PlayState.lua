@@ -75,6 +75,10 @@ function PlayState:enter(params)
     -- todo - debug -- this is quite HELPFUL 
     -- print_r (self.board)
 
+    -- todo
+    self.board:pInit()
+
+
     -- grab score from params if it was passed
     self.score = params.score or 0
 
@@ -285,17 +289,11 @@ end
 
 function PlayState:render()
     
-    -- todo prob need to render particles in here too - see bricks example yet again as needed
-    -- for now I will try putting it into the board.render
-    
     -- render board of tiles
-    self.board:render()
+    -- also includes particles
+    self.board:render(true)
 
     
-
-    
-    
-
 
     -- render highlighted tile if it exists
     if self.highlightedTile then

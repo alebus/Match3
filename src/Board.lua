@@ -50,6 +50,8 @@ function Board:initializeTiles()
             elseif self.level >= 4 then
                 table.insert(self.tiles[tileY], Tile(tileX, tileY, math.random(18), math.random(6)))
             end 
+               
+        
         end
     end
 
@@ -283,7 +285,23 @@ function Board:getFallingTiles()
 end
 
 
+
+
+-- todo init for particle system - check this, does it make sense cuz feels a little redunant or something
+-- but I only want it to run once at the start of each level right? 
+function Board:pInit()
+    for y = 1, #self.tiles do
+        for x = 1, #self.tiles[1] do
+            self.tiles[y][x]:psystemInit()
+        end
+    end
+end
+
+
+
+
 -- todo - why are the loops done in this way vs pairs()
+-- this was added to update the particle system
 function Board:update(dt)
     for y = 1, #self.tiles do
         for x = 1, #self.tiles[1] do
@@ -295,13 +313,15 @@ end
 
 
 
-function Board:render()
+function Board:render(particlesTF)
     for y = 1, #self.tiles do
         for x = 1, #self.tiles[1] do
             self.tiles[y][x]:render(self.x, self.y)
             
-            -- todo
-            self.tiles[y][x]:renderParticles()
+            -- don't render particles until we are in the playstate - this is because it's implemented to render after we have proper xy values for the tiles
+            if particlesTF then 
+                self.tiles[y][x]:renderParticles()
+            end
         end
     end
 end

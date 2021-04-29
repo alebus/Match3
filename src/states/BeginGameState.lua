@@ -82,7 +82,8 @@ end
 function BeginGameState:render()
     
     -- render board of tiles
-    self.board:render()
+    -- the false here means not to render particles yet
+    self.board:render(false)
 
     -- render Level # label and background rect
     love.graphics.setColor(95/255, 205/255, 228/255, 200/255)

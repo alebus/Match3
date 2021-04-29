@@ -29,31 +29,49 @@ function Tile:init(x, y, color, variety)
 
 
 
-  -- particle system stuff
-  -- todo see note about this being slow and ensure not doing anything over and over that you can do just once
-  self.psystem = love.graphics.newParticleSystem(gParticle, 64)
 
-  -- todo 
-  self.psystem:setParticleLifetime(0.5, 5)
 
-  -- give it an acceleration of anywhere between X1,Y1 and X2,Y2 (0, 0) and (80, 80) here
-  -- gives generally downward 
-  self.psystem:setLinearAcceleration(-15, 0, 15, 80)
+end
 
-  -- spread of particles; normal looks more natural than uniform
-  self.psystem:setEmissionArea('normal', 10, 10)
+
+
+
+-- todo - Am adding this so that we don't do a psystem until we have coordinates etc
+-- previously this was in Tile:init
+function Tile:psystemInit()
+
+
+
+    -- particle system stuff
+    -- todo see note about this being slow and ensure not doing anything over and over that you can do just once
+    self.psystem = love.graphics.newParticleSystem(gParticle, 64)
+
+    -- todo check all these values and locations of all this stuff too
+    self.psystem:setParticleLifetime(0.5, 5)
+
+    -- give it an acceleration of anywhere between X1,Y1 and X2,Y2 
+    self.psystem:setLinearAcceleration(-15, -15, 15, 15)
+
+    -- spread of particles; normal looks more natural than uniform
+    self.psystem:setEmissionArea('normal', 10, 10)
 
 
    
     -- todo not sure if this should be in this section or not
-    -- and later need to have it only happen sometimes
+    -- and later need to have it only happen sometimes, not for all tiles obvi
     -- and change color as needed
-    self.psystem:setColors(.5,.5,.5,.5,.2,.2,.2,.5)
+    self.psystem:setColors(.5,.5,.5,.5,.7,.7,.7,.5)
     self.psystem:emit(64)
 
 
 
+
 end
+
+
+
+
+
 
 --[[  todo - see note - could probably do it here as well
 function Tile:update(dt)
