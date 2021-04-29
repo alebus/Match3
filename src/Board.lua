@@ -282,10 +282,26 @@ function Board:getFallingTiles()
     return tweens
 end
 
+
+-- todo - why are the loops done in this way vs pairs()
+function Board:update(dt)
+    for y = 1, #self.tiles do
+        for x = 1, #self.tiles[1] do
+            -- todo this seems to be working but also I could poss do it with an "update" function inside Tile -- look in there for a todo
+            self.tiles[y][x].psystem:update(dt)
+        end
+    end
+end
+
+
+
 function Board:render()
     for y = 1, #self.tiles do
         for x = 1, #self.tiles[1] do
             self.tiles[y][x]:render(self.x, self.y)
+            
+            -- todo
+            self.tiles[y][x]:renderParticles()
         end
     end
 end

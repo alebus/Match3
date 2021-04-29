@@ -72,7 +72,9 @@ function PlayState:enter(params)
 
     self.board = params.board or Board(VIRTUAL_WIDTH - 272, 16, self.level)
 
-    
+    -- todo - debug -- this is quite HELPFUL 
+    -- print_r (self.board)
+
     -- grab score from params if it was passed
     self.score = params.score or 0
 
@@ -85,6 +87,14 @@ function PlayState:update(dt)
     if love.keyboard.wasPressed('escape') then
         love.event.quit()
     end
+
+    -- todo next -- check the overall flow of the particle system 
+    -- I think I am close!
+    -- again see the breakout code if not working etc
+    -- *check stuff super carefully, here I had Board:update and that was the only dumb thing keeping it from working!
+    self.board:update(dt)
+
+  
 
     -- go back to start if time runs out
     if self.timer <= 0 then
@@ -274,8 +284,18 @@ function PlayState:calculateMatches()
 end
 
 function PlayState:render()
+    
+    -- todo prob need to render particles in here too - see bricks example yet again as needed
+    -- for now I will try putting it into the board.render
+    
     -- render board of tiles
     self.board:render()
+
+    
+
+    
+    
+
 
     -- render highlighted tile if it exists
     if self.highlightedTile then

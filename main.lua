@@ -82,6 +82,10 @@ function love.load()
 
     -- initialize input table
     love.keyboard.keysPressed = {}
+
+
+    gParticle = love.graphics.newImage('graphics/particle.png')
+
 end
 
 function love.resize(w, h)
