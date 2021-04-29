@@ -226,7 +226,7 @@ function PlayState:calculateMatches()
                 --    end
 
                 -- code moved into here so they get 50 per match + more below possibly. otherwise there is no reward for matching more than 3!
-                self.score = self.score + #match * 50
+                self.score = self.score + 50
 
 
             -- here is the code where we add more points for each special shape tile
