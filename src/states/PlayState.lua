@@ -72,16 +72,13 @@ function PlayState:enter(params)
 
     self.board = params.board or Board(VIRTUAL_WIDTH - 272, 16, self.level)
 
-    -- todo next - make the shaped blocks worth more (not sure where) and also recheck this increasing level of blocks is all working as expected
-
-
+    
     -- grab score from params if it was passed
     self.score = params.score or 0
 
     -- score we have to reach to get to the next level
-    -- todo change this back after testing - debug
-    --self.scoreGoal = self.level * 1.25 * 1000
-    self.scoreGoal = self.level * 1.25 * 500
+    self.scoreGoal = self.level * 1.25 * 1000
+
 end
 
 function PlayState:update(dt)
@@ -210,11 +207,35 @@ function PlayState:calculateMatches()
         gSounds['match']:play()
 
          -- debug
-         print("Matches: ", #matches )
+         print("#Matches: ", #matches )
 
-        -- add score for each match
+        -- add score for each match (note there is often only be one match but with multiple tiles)
         for k, match in pairs(matches) do
+            
             self.score = self.score + #match * 50
+
+
+            --  match is a 2d array-  this is the code roughly:
+            --  table.insert(match, self.tiles[y][x2])  -- and also here you see that tiles is a 2d array as well
+		    --  table.insert(matches, match)
+
+            -- some was debugging stuff to figure out the data structures but also used to add more score for non-plain color tiles
+            -- so here we loop through each tile in the match table 
+            for j,k in pairs(match) do
+                -- for m,n in pairs (k) do
+                    -- print(m,n) -- this prints each tile's properties 
+                --    end
+
+            -- here is the code where we add more points for each special shape tile
+                if k.variety > 1 then 
+                    print("adding more because it's a shape tile")
+                    self.score = self.score + 200
+                end
+
+            end
+            
+
+
 
             -- add 1 to the timer for each TILE, not just each match
             self.timer = self.timer + #match
