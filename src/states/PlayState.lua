@@ -227,12 +227,13 @@ function PlayState:calculateMatches()
 
                 -- code moved into here so they get 50 per match + more below possibly. otherwise there is no reward for matching more than 3!
                 self.score = self.score + 50
-
+                print("+50 to score")
 
             -- here is the code where we add more points for each special shape tile
                 if k.variety > 1 then 
                     print("adding more because it's a shape tile")
                     self.score = self.score + 100
+                    print("+100 to score")
                 end
 
             end
