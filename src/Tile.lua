@@ -59,7 +59,7 @@ function Tile:psystemInit()
     -- todo not sure if this should be in this section or not
     -- and later need to have it only happen sometimes, not for all tiles obvi
     -- and change color as needed
-    self.psystem:setColors(255, 255, 255, 150, 255, 255, 255, 0)
+    self.psystem:setColors(150, 255, 255, 0, 150, 255, 150, 100, 150, 255, 255, 0)
     
     self.psystem:setSizes(.2)
 
