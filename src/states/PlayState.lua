@@ -92,13 +92,24 @@ function PlayState:update(dt)
         love.event.quit()
     end
 
-    -- todo next -- check the overall flow of the particle system 
+    -- todo - check the overall flow of the particle system 
     -- I think I am close!
-    -- again see the breakout code if not working etc
-    -- *check stuff super carefully, here I had Board:update and that was the only dumb thing keeping it from working!
+    -- again see the breakout code as needed
+    -- *check stuff super carefully, like here I had Board:update and that was the only dumb thing keeping it from working!
     self.board:update(dt)
 
   
+    -- every two seconds, emit particles 
+    if self.timer > 0 then
+    
+        if self.timer % 2 == 0 then
+
+            self.board:emitP()
+
+        end              
+    
+    end
+
 
     -- go back to start if time runs out
     if self.timer <= 0 then
@@ -290,7 +301,7 @@ end
 function PlayState:render()
     
     -- render board of tiles
-    -- also includes particles
+    -- also includes particles via the "true" argument
     self.board:render(true)
 
     

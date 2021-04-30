@@ -41,33 +41,41 @@ end
 function Tile:psystemInit()
 
 
-
     -- particle system stuff
     -- todo see note about this being slow and ensure not doing anything over and over that you can do just once
     self.psystem = love.graphics.newParticleSystem(gParticle, 64)
 
-    -- todo check all these values and locations of all this stuff too
-    self.psystem:setParticleLifetime(0.5, 5)
+    -- todo check / experiment with all these values and locations of all this stuff too
+    -- like here make it shorter but emit it again
+    self.psystem:setParticleLifetime(.5, 2)
 
     -- give it an acceleration of anywhere between X1,Y1 and X2,Y2 
-    self.psystem:setLinearAcceleration(-15, -15, 15, 15)
+    self.psystem:setLinearAcceleration(-5, -5, 10, 10)
 
     -- spread of particles; normal looks more natural than uniform
-    self.psystem:setEmissionArea('normal', 10, 10)
-
-
+    -- todo try uniform and other settings
+    self.psystem:setEmissionArea('uniform', 10, 10)
    
     -- todo not sure if this should be in this section or not
     -- and later need to have it only happen sometimes, not for all tiles obvi
     -- and change color as needed
-    self.psystem:setColors(.5,.5,.5,.5,.7,.7,.7,.5)
-    self.psystem:emit(64)
-
+    self.psystem:setColors(255, 255, 255, 150, 255, 255, 255, 0)
+    
+    self.psystem:setSizes(.2)
 
 
 
 end
 
+
+-- I'm putting this here so I can do it on a timer from the playstate 
+-- because we want it emtting every couple seconds
+function Tile:emit()
+
+    --self.psystem:setPosition( self.x, self.y )
+    self.psystem:emit(64)    
+
+end
 
 
 
@@ -84,9 +92,6 @@ end
 
 
 function Tile:render(x, y)
- 
-
-
 
     -- draw shadow
     love.graphics.setColor(34, 32, 52, 255)
@@ -103,6 +108,7 @@ end
 
 
 
-function Tile:renderParticles()
-    love.graphics.draw(self.psystem, self.x + 16, self.y + 8)
+function Tile:renderParticles(x, y)
+    --self.psystem:setPosition( self.x, self.y )
+    love.graphics.draw(self.psystem, self.x + x + 16, self.y + y + 16)
 end

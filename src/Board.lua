@@ -180,6 +180,7 @@ function Board:calculateMatches()
     return #self.matches > 0 and self.matches or false
 end
 
+-- todo also look at how the looping works here
 --[[
     Remove the matches from the Board by just setting the Tile slots within
     them to nil, then setting self.matches to nil.
@@ -250,7 +251,11 @@ function Board:getFallingTiles()
         end
     end
 
+
+    -- todo finish any particle system stuff here when you introduce the shiny blocks properly
+    
     -- create replacement tiles at the top of the screen
+    print("creating replacement tiles")
     for x = 1, 8 do
         for y = 8, 1, -1 do
             local tile = self.tiles[y][x]
@@ -259,7 +264,6 @@ function Board:getFallingTiles()
             if not tile then
 
                 -- new tile with random color and variety
-                
                 if self.level == 1 then
                     tile = Tile(x, y, math.random(6), 1)
                 elseif self.level == 2 or self.level == 3 then
@@ -272,6 +276,9 @@ function Board:getFallingTiles()
 
                 tile.y = -32
                 self.tiles[y][x] = tile
+
+                -- todo 
+                self.tiles[y][x]:psystemInit()
 
                 -- create a new tween to return for this tile to fall down
                 tweens[tile] = {
@@ -289,10 +296,21 @@ end
 
 -- todo init for particle system - check this, does it make sense cuz feels a little redunant or something
 -- but I only want it to run once at the start of each level right? 
+-- also it's useful for right now at least because I need to init indiv tiles when refilling the board
 function Board:pInit()
     for y = 1, #self.tiles do
         for x = 1, #self.tiles[1] do
             self.tiles[y][x]:psystemInit()
+        end
+    end
+end
+
+
+-- emit particles
+function Board:emitP()
+    for y = 1, #self.tiles do
+        for x = 1, #self.tiles[1] do
+            self.tiles[y][x]:emit()
         end
     end
 end
@@ -318,9 +336,13 @@ function Board:render(particlesTF)
         for x = 1, #self.tiles[1] do
             self.tiles[y][x]:render(self.x, self.y)
             
+
             -- don't render particles until we are in the playstate - this is because it's implemented to render after we have proper xy values for the tiles
+
+            -- todo actually you need to fix this, you should only render particles sometimes, and this will crash if there is no psystem
+            -- or you could do a hacky thing where you always have a psystem but don't actually emit, or emit clear one, or stop the psystem etc etc
             if particlesTF then 
-                self.tiles[y][x]:renderParticles()
+                self.tiles[y][x]:renderParticles(self.x, self.y)
             end
         end
     end
