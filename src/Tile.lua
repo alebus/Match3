@@ -47,10 +47,8 @@ function Tile:psystemInit()
 
 
     -- particle system stuff
-    -- todo see note about this being slow and ensure not doing anything over and over that you can do just once
     self.psystem = love.graphics.newParticleSystem(gParticle, 64)
 
-    -- todo check / experiment with all these values and locations of all this stuff too
     -- like here make it shorter but emit it again
     self.psystem:setParticleLifetime(.5, 2)
 
@@ -58,12 +56,8 @@ function Tile:psystemInit()
     self.psystem:setLinearAcceleration(-5, -5, 10, 10)
 
     -- spread of particles; normal looks more natural than uniform
-    -- todo try uniform and other settings
     self.psystem:setEmissionArea('uniform', 10, 10)
    
-    -- todo not sure if this should be in this section or not
-    -- and later need to have it only happen sometimes, not for all tiles obvi
-    -- and change color as needed
     self.psystem:setColors(150, 255, 255, 0, 150, 255, 150, 100, 150, 255, 255, 0)
     
     self.psystem:setSizes(.2)
@@ -81,18 +75,6 @@ function Tile:emit()
     self.psystem:emit(64)    
 
 end
-
-
-
-
-
---[[  todo - see note - could probably do it here as well
-function Tile:update(dt)
-
-    self.psystem:update(dt)
-
-end
-]]
 
 
 

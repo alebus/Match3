@@ -75,7 +75,6 @@ function PlayState:enter(params)
     -- todo - debug -- this is quite HELPFUL 
     -- print_r (self.board)
 
-    -- todo
     self.board:pInit()
 
 
@@ -92,10 +91,7 @@ function PlayState:update(dt)
         love.event.quit()
     end
 
-    -- todo - check the overall flow of the particle system 
-    -- I think I am close!
-    -- again see the breakout code as needed
-    -- *check stuff super carefully, like here I had Board:update and that was the only dumb thing keeping it from working!
+
     self.board:update(dt)
 
   
