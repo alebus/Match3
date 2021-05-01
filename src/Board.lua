@@ -134,7 +134,6 @@ function Board:calculateMatches()
                         -- if any were shiny in the match then add the whole row instead
 
                         for x2 = 8, 1, -1 do
-                            -- add each tile to the match that's in that match
                             table.insert(match, self.tiles[y][x2])
                         end
 
@@ -170,10 +169,26 @@ function Board:calculateMatches()
             
             -- go backwards from end of last row by matchNum
             for x = 8, 8 - matchNum + 1, -1 do
+
+                if self.tiles[y][x].shiny then 
+                    shinyTile = true
+                end
+
                 table.insert(match, self.tiles[y][x])
             end
 
+            if shinyTile then
+               
+                for x2 = 8, 1, -1 do
+                    table.insert(match, self.tiles[y][x2])
+                    gSounds['next-level']:play()
+                end
+           
+            end
+
+
             table.insert(matches, match)
+            shinyTile = false
         end
     end
 
