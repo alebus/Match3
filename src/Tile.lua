@@ -27,7 +27,12 @@ function Tile:init(x, y, color, variety)
     self.color = color
     self.variety = variety
 
-
+    
+    if math.random(1,10) == 5 then
+        self.shiny = true        
+    else 
+        self.shiny = false
+    end
 
 
 
@@ -36,7 +41,7 @@ end
 
 
 
--- todo - Am adding this so that we don't do a psystem until we have coordinates etc
+-- this is here so that we don't do a psystem until we have coordinates etc
 -- previously this was in Tile:init
 function Tile:psystemInit()
 

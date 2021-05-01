@@ -277,8 +277,9 @@ function Board:getFallingTiles()
                 tile.y = -32
                 self.tiles[y][x] = tile
 
-                -- todo 
-                self.tiles[y][x]:psystemInit()
+                if self.tiles[y][x].shiny then 
+                    self.tiles[y][x]:psystemInit()
+                end
 
                 -- create a new tween to return for this tile to fall down
                 tweens[tile] = {
@@ -294,13 +295,14 @@ end
 
 
 
--- todo init for particle system - check this, does it make sense cuz feels a little redunant or something
--- but I only want it to run once at the start of each level right? 
--- also it's useful for right now at least because I need to init indiv tiles when refilling the board
+-- init for particle system
 function Board:pInit()
     for y = 1, #self.tiles do
         for x = 1, #self.tiles[1] do
-            self.tiles[y][x]:psystemInit()
+
+            if self.tiles[y][x].shiny then 
+                self.tiles[y][x]:psystemInit()
+            end
         end
     end
 end
@@ -310,7 +312,10 @@ end
 function Board:emitP()
     for y = 1, #self.tiles do
         for x = 1, #self.tiles[1] do
-            self.tiles[y][x]:emit()
+            
+            if self.tiles[y][x].shiny then 
+                self.tiles[y][x]:emit()
+            end
         end
     end
 end
@@ -323,8 +328,10 @@ end
 function Board:update(dt)
     for y = 1, #self.tiles do
         for x = 1, #self.tiles[1] do
-            -- todo this seems to be working but also I could poss do it with an "update" function inside Tile -- look in there for a todo
-            self.tiles[y][x].psystem:update(dt)
+            
+            if self.tiles[y][x].shiny then 
+                self.tiles[y][x].psystem:update(dt)
+            end
         end
     end
 end
@@ -338,10 +345,8 @@ function Board:render(particlesTF)
             
 
             -- don't render particles until we are in the playstate - this is because it's implemented to render after we have proper xy values for the tiles
-
-            -- todo actually you need to fix this, you should only render particles sometimes, and this will crash if there is no psystem
-            -- or you could do a hacky thing where you always have a psystem but don't actually emit, or emit clear one, or stop the psystem etc etc
-            if particlesTF then 
+            -- also don't render unless it is a shiny tile
+            if particlesTF and self.tiles[y][x].shiny then 
                 self.tiles[y][x]:renderParticles(self.x, self.y)
             end
         end
