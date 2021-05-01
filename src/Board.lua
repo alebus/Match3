@@ -79,6 +79,8 @@ function Board:calculateMatches()
         local colorToMatch = self.tiles[y][1].color
 
         matchNum = 1
+
+        shinyTile = false
         
         -- every horizontal tile
         for x = 2, 8 do
@@ -86,28 +88,75 @@ function Board:calculateMatches()
             -- if this is the same color as the one we're trying to match...
             if self.tiles[y][x].color == colorToMatch then
                 matchNum = matchNum + 1
-            else
+
                 
+            else
+               
+                -- [Airn] ok so it doesn't run all this until the matching is complete for that color
+
+                 
                 -- set this as the new color we want to watch for
                 colorToMatch = self.tiles[y][x].color
+
+                
+
+                -- todo next - I think there are multiple bugs with this:
+                -- (esp look into your shinyTile stuff)
+                -- first look at "todo 1" and 2 to see if that should be where it is or not, run through the loops
+                -- it's not always clearing the row with a shiny block in match
+                -- it may be clearing rows when shiny is NOT in the match
+                -- need to add code (at end) to do shiny stuff for vertical matches too
+
 
                 -- if we have a match of 3 or more up to now, add it to our matches table
                 if matchNum >= 3 then
                     local match = {}
 
+
+                    -- todo 2 - move / alter this here loop through all matches and see if any are shiny
+                    -- and be really careful where you set shiny back to false
+                    -- need to ensure you are only checking the matches for shiny, not the whole row. but then removing the whole row
+                    -- **may need to change the whole way I am doing this below like just increase the matches to the whole row only after checking the existing matches
+            
+
                     -- go backwards from here by matchNum
                     for x2 = x - 1, x - matchNum, -1 do
                         
-                        -- add each tile to the match that's in that match
-                        table.insert(match, self.tiles[y][x2])
+                        if self.tiles[y][x2].shiny then 
+                            shinyTile = true
+                        end
+
+                        -- ok so we will do this but may overwrite it later
+                        table.insert(match, self.tiles[y][x2])                     
                     end
+
+                    if shinyTile then 
+                        -- if any were shiny in the match then add the whole row instead
+
+                        for x2 = 8, 1, -1 do
+                            -- add each tile to the match that's in that match
+                            table.insert(match, self.tiles[y][x2])
+                        end
+
+                        gSounds['next-level']:play()
+        
+                    end 
 
                     -- add this match to our total matches table
                     table.insert(matches, match)
+                    
+                    -- todo 1 - is this the best location to set this back to false?
+                    shinyTile = false
                 end
 
-                matchNum = 1
+                             
 
+
+
+                -- todo ensure add and test shiny code for vertical matches too though it said to remove ROW
+                -- todo check this other code now that I am adding the shiny stuff
+                matchNum = 1
+           
                 -- don't need to check last two if they won't be in a match
                 if x >= 7 then
                     break
