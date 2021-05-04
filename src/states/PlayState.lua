@@ -180,7 +180,7 @@ function PlayState:update(dt)
                 local tempX = self.highlightedTile.gridX
                 local tempY = self.highlightedTile.gridY
 
-                local newTile = self.board.tiles[y][x]
+                newTile = self.board.tiles[y][x]
 
                 self.highlightedTile.gridX = newTile.gridX
                 self.highlightedTile.gridY = newTile.gridY
@@ -193,22 +193,56 @@ function PlayState:update(dt)
 
                 self.board.tiles[newTile.gridY][newTile.gridX] = newTile
 
+                -- self.highlighedTile gets set to nil so let's save it
+                oldTile = self.highlightedTile
+              
                 -- tween coordinates between the two so they swap
                 Timer.tween(0.1, {
                     [self.highlightedTile] = {x = newTile.x, y = newTile.y},
                     [newTile] = {x = self.highlightedTile.x, y = self.highlightedTile.y}
-                })
-                
-                -- once the swap is finished, we can tween falling blocks as needed
-                :finish(function()
-                    self:calculateMatches()
-                end)
+                }):finish(function()  -- I moved this here to make it clear you can't put any code in between the tween and :finish
+                 
+                    -- put everything back if there wasn't a match            
+                    if self:calculateMatches() == false then 
+                        print("no matches") 
+                        print(self.boardHighlightY, self.boardHighlightX)
+                        print("nt: ",newTile.x)
+                        print("ot: ",oldTile.x)
+                        
+                        gSounds['error']:play()
+
+                        -- tween them back the way they were                        
+                        Timer.tween(0.1, {
+                            [newTile] = {x = oldTile.x, y = oldTile.y},
+                            [oldTile] = {x = newTile.x, y = newTile.y}
+                        })
+                       
+                        
+                        -- swap grid positions of tiles back to how they were before
+                        local tempX = oldTile.gridX
+                        local tempY = oldTile.gridY
+
+
+                        oldTile.gridX = newTile.gridX
+                        oldTile.gridY = newTile.gridY
+                        newTile.gridX = tempX
+                        newTile.gridY = tempY
+
+                        -- swap tiles in the tiles table
+                        self.board.tiles[oldTile.gridY][oldTile.gridX] = oldTile
+                        self.board.tiles[newTile.gridY][newTile.gridX] = newTile
+                    end
+                            
+                end) -- end of anon function 
+
             end
         end
     end
 
     Timer.update(dt)
 end
+
+
 
 --[[
     Calculates whether any matches were found on the board and tweens the needed
@@ -291,6 +325,7 @@ function PlayState:calculateMatches()
     -- if no matches, we can continue playing
     else
         self.canInput = true
+        return false -- [airn] added as part of the final feature 
     end
 end
 
