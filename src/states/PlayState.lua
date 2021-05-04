@@ -16,6 +16,8 @@
     main menu or the score entry menu if they made the top 10.
 ]]
 
+-- todo ensure you merge the final branch with main when you are done with the assignment and ready to submit your code!
+
 PlayState = Class{__includes = BaseState}
 
 function PlayState:init()

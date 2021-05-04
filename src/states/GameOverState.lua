@@ -16,6 +16,7 @@ function GameOverState:init()
 
 end
 
+-- todo I think this is not working
 function GameOverState:enter(params)
     self.score = params.score 
 end

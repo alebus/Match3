@@ -55,7 +55,7 @@ function Board:initializeTiles()
         end
     end
 
-    while self:calculateMatches() do
+    while self:calculateMatches("nosound") do
         
         -- recursively initialize if matches were returned so we always have
         -- a matchless board on start
@@ -68,8 +68,14 @@ end
     tiles of the same color. Doesn't need to check the last tile in every row or column if the 
     last two haven't been a match.
 ]]
-function Board:calculateMatches()
+function Board:calculateMatches(ns)
     local matches = {}
+
+    nosound = false
+
+    if ns == "nosound" then
+        nosound = true
+    end
 
     -- how many of the same color blocks in a row we've found
     local matchNum = 1
@@ -123,8 +129,11 @@ function Board:calculateMatches()
                             table.insert(match, self.tiles[y][x2])
                         end
 
-                        gSounds['next-level']:play()
-        
+                        -- prevent sound from playing when there is a new board at start
+                        if nosound == false then 
+                            print("playing next-level sound")
+                            gSounds['next-level']:play()
+                        end
                     end 
 
                     -- add this match to our total matches table
@@ -160,7 +169,10 @@ function Board:calculateMatches()
                
                 for x2 = 8, 1, -1 do
                     table.insert(match, self.tiles[y][x2])
-                    gSounds['next-level']:play()
+                    if nosound == false then 
+                        print("playing next-level sound")
+                        gSounds['next-level']:play()
+                    end
                 end
            
             end
