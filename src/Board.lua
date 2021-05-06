@@ -55,11 +55,11 @@ function Board:initializeTiles()
             
             if self.level == 1 then
                 table.insert(self.tiles[tileY], Tile(tileX, tileY, math.random(6), 1))
-            elseif self.level == 2 or self.level == 3 then
+            --elseif self.level == 2 or self.level == 3 then
                 -- 12 or 18 colors
-                table.insert(self.tiles[tileY], Tile(tileX, tileY, math.random(self.level * 6), 1))
+                --table.insert(self.tiles[tileY], Tile(tileX, tileY, math.random(self.level * 6), 1))
                 -- all colors and all patterns
-            elseif self.level >= 4 then
+            else 
                 table.insert(self.tiles[tileY], Tile(tileX, tileY, math.random(18), math.random(6)))
             end 
                
