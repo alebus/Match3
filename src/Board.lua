@@ -23,8 +23,20 @@ function Board:init(x, y, level)
     print("level in board-init:", self.level)
 
     
-
     self:initializeTiles()
+
+    print("checking the board to ensure there is at least one poss match")
+    
+    if self:checkBoard() then
+        print("there is at least one match possible")
+    else
+        -- here we need to redo the board
+        print("no matches possible on this board!")
+        print("self:initializeTiles()")
+        self:initializeTiles()
+    end
+
+
 end
 
 function Board:initializeTiles()
@@ -249,6 +261,135 @@ function Board:removeMatches()
 
     self.matches = nil
 end
+
+
+
+
+--[[
+    Ensure the board has at least one match by trying to move blocks around and seeing if there is a match.
+    Returns true if there was at least one match.  
+]]
+function Board:checkBoard()
+
+    -- start moving every tile in all directions to see if there is a match
+    -- every time we move one, check for a match, then if we get one we can return
+    -- rem gridX is board location vs x y which are the actual coords 
+  
+    for y = 1, 8 do
+        
+        for x = 1, 8 do
+            
+            
+            for a = 1, 4 do
+            
+                dontTest = false
+                print("a:", a)
+               
+                -- checking all 4 directions unless they would go off the board
+                if a == 1 and y > 1 then 
+                    w = y-1
+                    z = x
+                elseif a == 2 and x < 8 then
+                    w = y
+                    z = x+1
+                elseif a == 3 and y < 8 then
+                    w = y+1
+                    z = x
+                elseif a == 4 and x > 1 then 
+                    w = y
+                    z = x-1
+                else 
+                    dontTest = true
+                end
+               
+               if dontTest then 
+                    print("skipping test")
+               else
+                            
+                
+                    print("swappping tiles to test...before swap:")
+                    print("firstTile - y, x: ", y, x)
+                    print("testTile - w, z:", w, z)
+
+                    local firstTile = self.tiles[y][x]
+
+                    local tempX = firstTile.gridX
+                    local tempY = firstTile.gridY
+
+                  
+                    local testTile = self.tiles[w][z]
+                               
+
+                    firstTile.gridX = testTile.gridX
+                    firstTile.gridY = testTile.gridY
+                
+                    testTile.gridX = tempX
+                    testTile.gridY = tempY
+
+                    -- swap the tiles in the table
+                    self.tiles[firstTile.gridY][firstTile.gridX] = firstTile
+                    self.tiles[testTile.gridY][testTile.gridX] = testTile
+                
+                    print("swappping tiles to test...after swap:")
+                    --print("firstTile.color: ", firstTile.color)
+                    print("firstTile.gridY, gridX: ", firstTile.gridY, firstTile.gridX)
+                    --print("testTile.color: ", testTile.color)
+                    print("testTile.gridY, gridX: ", testTile.gridY, testTile.gridX)
+
+
+                    local didMatch = self:calculateMatches("nosound")
+
+                    -- return i.e. end function early if there is a match 
+                    -- but always swap the tiles back to how they were first
+                    
+                    -- swap the tiles back
+                    print("swappping tiles back")
+                    
+                    
+                    local tempX = firstTile.gridX
+                    local tempY = firstTile.gridY
+                    
+                    firstTile.gridX = testTile.gridX
+                    firstTile.gridY = testTile.gridY
+                
+                    testTile.gridX = tempX
+                    testTile.gridY = tempY
+              
+
+                    self.tiles[firstTile.gridY][firstTile.gridX] = firstTile
+                    self.tiles[testTile.gridY][testTile.gridX] = testTile
+                
+                    --print("firstTile.color: ", firstTile.color)
+                    print("firstTile.gridY, gridX: ", firstTile.gridY, firstTile.gridX)
+                    --print("testTile.color: ", testTile.color)
+                    print("testTile.gridY, gridX: ", testTile.gridY, testTile.gridX)
+
+
+
+                    print("didMatch", didMatch)
+
+                    if didMatch then
+                        print("didMatch is true, returning true from Board:checkBoard")
+                        return true
+                    end
+
+                end -- end of loop 1-4
+            end 
+        
+    end
+    
+    end 
+
+    print("didMatch was never true, returning false from Board:checkBoard")
+    return false
+
+end
+
+
+
+
+
+
 
 --[[
     Shifts down all of the tiles that now have spaces below them, then returns a table that
