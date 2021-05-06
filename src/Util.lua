@@ -45,7 +45,7 @@ function GenerateTileQuads(atlas)
 
     return tiles
 end
--- todo check this out! like could really have used that earlier darn! I don't rem him mentioning it in the lecture, are there notes you are not seeing?
+-- todo check this out! 
 --[[
     Recursive table printing function.
     https://coronalabs.com/blog/2014/09/02/tutorial-printing-table-contents/
